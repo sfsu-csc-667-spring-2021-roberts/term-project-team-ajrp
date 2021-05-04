@@ -1,16 +1,22 @@
 require('dotenv').config();
 
 module.exports = {
-  "development": {
+ "development": {
     "use_env_variable": "DATABASE_URL",
     "dialect": "postgres"
-  },
-  "test": {
+ },
+ "test": {
     "use_env_variable": "DATABASE_URL",
     "dialect": "postgres"
-  },
-  "production": {
+ },
+ "production": {
     "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres"
-  }
+    "dialect": "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+ }
 }

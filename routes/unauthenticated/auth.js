@@ -25,7 +25,19 @@ router.post('/register', function(req, res, next) {
     errors.push("Make sure your passwords match");
   }
 
-  if(!errors.length == 0) {
+  Users.findUsername(username)
+    .then(user => {
+      console.log(user);
+      console.log(user.username);
+      if(username === user.username) {
+        console.log("test");
+        return errors.push("Username taken!");
+      }
+    })
+    .catch(() => {console.log("Validation passed")})
+
+  console.log(errors.length);
+  if(errors.length != 0) {
     res.render('unauthenticated/register', { errors });
   }
   else {

@@ -4,9 +4,15 @@ const create = (username, password) => {
     //returns details
     return db.one(
         'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username', [
-            username,
-            password
-        ])
+        username,
+        password
+    ])
 }
 
-module.exports = { create }
+const findUsername = (username) => {
+    return db.oneOrNone(
+        'SELECT username FROM users WHERE username=($1)', [username]
+    )
+}
+
+module.exports = { create, findUsername }

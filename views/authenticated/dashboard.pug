@@ -2,3 +2,5 @@ extends layout
 
 block content
     h1 Signed in
+    form(action='/logout' method="GET")
+        input(type="submit" name="submit" value="Logout")

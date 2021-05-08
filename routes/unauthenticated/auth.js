@@ -4,12 +4,14 @@ const bcrypt = require('bcrypt');
 
 const Users = require('../../db').Users;
 
-/* GET home page. */
+const passport = require('../../config/passport');
+
+/* GET register */
 router.get('/register', function (req, res, next) {
   res.render('unauthenticated/register', {});
 });
 
-/* client POST */
+/* POST register */
 router.post('/register', function (req, res, next) {
   const { username, password, confirmPassword } = req.body;
 
@@ -43,5 +45,19 @@ router.post('/register', function (req, res, next) {
       })
   }
 });
+
+/* GET login */
+router.get('/login', function (req, res, next) {
+  res.render('unauthenticated/login', {});
+});
+
+/* POST login */
+router.post('/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/register',
+    failureFlash: true
+  })
+);
 
 module.exports = router;

@@ -15,4 +15,10 @@ const findUsername = (username) => {
     )
 }
 
-module.exports = { create, findUsername }
+const findUser = (username) => {
+    return db.oneOrNone(
+        'SELECT * FROM users Where username=($1)', [username]
+    )
+}
+
+module.exports = { create, findUsername, findUser }

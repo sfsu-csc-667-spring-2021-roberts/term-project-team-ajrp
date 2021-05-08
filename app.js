@@ -3,10 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
+
+var passport = require('./config/passport');
 
 var indexRouter = require('./routes/unauthenticated/index');
 var usersRouter = require('./routes/users');
@@ -19,6 +23,18 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+app.use(flash());
+
+app.use(
+  session({
+    //possibly move into .env
+    secret: 'justsomesecretkey',
+    resave: false,
+    
+}))
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(logger('dev'));
 app.use(express.json());

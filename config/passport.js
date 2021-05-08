@@ -23,4 +23,19 @@ passport.use(new LocalStrategy(
   }
 ));
 
+// session usage
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  Users.findById(id)
+    .then((user) => {
+      return done(null, user);
+    })
+    .catch((error) => {
+      return done(error, null);
+    })
+});
+
 module.exports = passport;

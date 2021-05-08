@@ -6,6 +6,8 @@ var logger = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+const isLoggedIn = require('./routes/unauthenticated/sessionCheck');
+
 if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
@@ -17,6 +19,8 @@ var usersRouter = require('./routes/users');
 var testsRouter = require('./routes/tests');
 
 var authRouter = require('./routes/unauthenticated/auth');
+
+var dashboardRouter = require('./routes/authenticated/dashboard');
 
 var app = express();
 
@@ -42,9 +46,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// home router, will go dashboard if session is detected
 app.use('/', indexRouter, authRouter);
+
+// unauthenticated router
 app.use('/users', usersRouter);
 app.use('/tests', testsRouter);
+
+// authenticated routes
+app.use('/dashboard', isLoggedIn, dashboardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

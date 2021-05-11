@@ -1,3 +1,4 @@
 const Users = require('./users');
+const Lobbies = require('./lobbies');
 
-module.exports = { Users }
+module.exports = { Users, Lobbies }

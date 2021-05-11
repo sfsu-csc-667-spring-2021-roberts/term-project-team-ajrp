@@ -1,6 +1,11 @@
 extends layout
 
 block content
-    h1 Signed in
+    h1 Welcome back #{username}!
     form(action='/logout' method="GET")
-        input(type="submit" name="submit" value="Logout")
+        input(type="submit" name="logout" value="Logout")
+    form(action='/dashboard/create-lobby' method="POST")
+        input(type="submit" name="create-lobby" value="Create Lobby")
+    div(class="lobby-list")
+
+    script(src="/scripts/dashboard.js")

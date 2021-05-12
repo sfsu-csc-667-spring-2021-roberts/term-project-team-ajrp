@@ -5,7 +5,10 @@ block content
     form(action='/logout' method="GET")
         input(type="submit" name="logout" value="Logout")
     form(action='/dashboard/create-lobby' method="POST")
+        input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
         input(type="submit" name="create-lobby" value="Create Lobby")
     div(class="lobby-list")
+        p(id="lobby")
+        //work on javascript part to fetch lobbies
 
     script(src="/scripts/dashboard.js")

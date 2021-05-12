@@ -1,9 +1,12 @@
 const db = require('./connection');
 
-const createLobby = (player_id) => {
+//fix game_id
+const createLobby = (lobbyName, player_id) => {
   return db.none(
-    'INSERT INTO lobbies (player_id) VALUES ($1)', [
-    player_id
+    'INSERT INTO lobbies (game_name, player_id, game_id) VALUES ($1, $2, $3)', [
+    lobbyName,
+    player_id,
+    2
   ]);
 }
 

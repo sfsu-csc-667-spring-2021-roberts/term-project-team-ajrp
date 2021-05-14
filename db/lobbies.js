@@ -13,13 +13,13 @@ const createLobby = (lobbyName, player_id) => {
 const allLobbies = () => {
   return db.any(
     'SELECT * FROM lobbies'
-  )
+  );
 }
 
 const countPlayers = () => {
   return db.one(
     'COUNT (*) FROM lobbies'
-  )
+  );
 }
 
 module.exports = { createLobby, allLobbies };

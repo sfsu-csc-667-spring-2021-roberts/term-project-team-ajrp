@@ -13,11 +13,17 @@ router.post('/create-lobby', function (req, res) {
 })
 
 router.get('/lobbies', function (req, res) {
+  let results = [];
   Lobbies.allLobbies()
     .then(lobby => {
-      res.json({ game_name: lobby[0].game_name });
-      console.log(lobby);
-      console.log(lobby[0].game_name);
+      lobby.forEach(entry => {
+        Object.entries(entry).forEach(([key, value]) => {
+          if(key === 'game_name') {
+            results.push({game_name: `${value}`})
+          }
+        })
+      })
+      res.json(results);
     })
 })
 

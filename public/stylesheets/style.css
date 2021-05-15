@@ -45,3 +45,24 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.form-container {
+  width: 100%;
+}
+
+.form-container label {
+  display: block;
+  text-align: center;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.form-container input {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  height: 50px;
+  font-size: 1.2rem;
+}

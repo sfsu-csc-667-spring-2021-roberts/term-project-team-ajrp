@@ -1,12 +1,14 @@
 extends layout
 
 block content
-    h1 Login
-    if errors
-        p #{errors}
-    form(action="/login" method="POST")
-        label(for="username") Username
-        input(type="text" id="username" name="username" placeholder="Username")
-        label(for="password") Password
-        input(type="password" id="password" name="password" placeholder="Password")
-        input(type="submit" name="submit" value="Submit")
+    div(class="home-wrapper")
+        div(class="home-container")
+            h1 Login
+            if errors
+                p #{errors}
+            form(class="form-container" action="/login" method="POST")
+                label(for="username") Username
+                input(type="text" id="username" name="username" placeholder="Username")
+                label(for="password") Password
+                input(type="password" id="password" name="password" placeholder="Password")
+                input(type="submit" name="submit" value="Submit")

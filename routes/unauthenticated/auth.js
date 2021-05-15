@@ -14,13 +14,12 @@ router.get('/register', function (req, res, next) {
 /* POST register */
 router.post('/register', function (req, res, next) {
   const { username, password, confirmPassword } = req.body;
-
   const errors = [];
 
   if (!username || !password || !confirmPassword) {
     errors.push(['Please enter all fields']);
   }
-  else if (password < 8) {
+  else if (password.length < 8) {
     errors.push("Password must be at least 8 characters");
   }
   else if (confirmPassword != password) {
@@ -55,7 +54,7 @@ router.get('/login', function (req, res, next) {
 router.post('/login',
   passport.authenticate('local', {
     successRedirect: '/dashboard',
-    failureRedirect: '/register',
+    failureRedirect: '/login',
     failureFlash: true
   })
 );

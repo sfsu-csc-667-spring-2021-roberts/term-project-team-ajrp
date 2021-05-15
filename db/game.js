@@ -1,6 +1,6 @@
 const db = require('./connection');
 
-const createLobby = (player_id, username, next) => {
+const createGame = (player_id, lobby_id, next) => {
   var newName = "Game of "+username;
   var query = "INSERT INTO lobbies (player_id, game_name) VALUES ("+player_id+", '"+newName+"') RETURNING id;";
   db.one(query).then((info) => {
@@ -13,7 +13,7 @@ const createLobby = (player_id, username, next) => {
 const allLobbies = () => {
   return db.any(
     'SELECT * FROM lobbies'
-  );
+  )
 }
 
 const countPlayers = () => {

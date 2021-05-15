@@ -8,9 +8,10 @@ const flash = require('connect-flash');
 
 const isLoggedIn = require('./routes/unauthenticated/sessionCheck');
 
-if(process.env.NODE_ENV === 'development') {
+require("dotenv").config();
+/*if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
-}
+}*/
 
 var passport = require('./config/passport');
 
@@ -35,6 +36,7 @@ app.use(
     //possibly move into .env
     secret: 'justsomesecretkey',
     resave: false,
+    saveUninitialized: false
     
 }))
 app.use(passport.initialize());

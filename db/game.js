@@ -8,34 +8,7 @@ const createGame = (player_id, lobby_id, next) => {
     next({id: info.id, gameName: newName});
   }).catch((error) => {
     console.log(error);
-  })
-
-
-        id: {
-          type: Sequelize.INTEGER,
-          primaryKey: true
-        },
-        lobby_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'lobbies',
-            key: 'id'
-          }
-        },
-        number_of_players: {
-          type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        createAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.literal('NOW()'),
-          allowNull: false
-        },
-        ended: {
-          type: Sequelize.BOOLEAN,
-          defaultValue: false
-        }
+  });
 }
 
 const allLobbies = () => {
@@ -50,4 +23,8 @@ const countPlayers = () => {
   )
 }
 
+<<<<<<< HEAD
 module.exports = { createLobby, allLobbies };
+=======
+module.exports = { createGame, allLobbies, countPlayers };
+>>>>>>> 6a67705649839b2e8f966006d4478223c5bf3347

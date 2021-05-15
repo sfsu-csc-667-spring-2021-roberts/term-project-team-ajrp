@@ -24,7 +24,7 @@ module.exports = {
         },
         game_id: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: false
         },
         createAt: {
           type: Sequelize.DATE,

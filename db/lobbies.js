@@ -13,7 +13,7 @@ const createLobby = (player_id, username, next) => {
 const allLobbies = () => {
   return db.any(
     'SELECT * FROM lobbies'
-  )
+  );
 }
 
 const countPlayers = () => {

@@ -1,6 +1,7 @@
 const db = require('./connection');
 const lobbies = require('./lobbies');
 
+<<<<<<< HEAD
 const createGame = (lobby_id, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
     var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
@@ -43,4 +44,8 @@ const countPlayers = () => {
   )
 }
 
+<<<<<<< HEAD
 module.exports = { createGame, exitGame, countPlayers };
+=======
+module.exports = { createGame, allLobbies, countPlayers };
+>>>>>>> a81c5892a755363425c1059de70bbbb2c82eaf50

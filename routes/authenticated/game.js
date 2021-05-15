@@ -1,24 +1,24 @@
 var express = require('express');
 var router = express.Router();
 
-const game = require('../../db/').Game
+const game = require('../../db/').Games
 
 router.get('/', function (req, res, next) {
     res.render('authenticated/dashboard', {username: req.user.username});
 });
 
 router.post('/startGame', function (req, res) {
-    game.createGame(req.user.id, req.session.lobbyID, function(lobbyInfo) {
-	  	req.session.lobbyID = lobbyInfo.id;
-	    res.render('authenticated/lobby', {gameName: lobbyInfo.gameName, username: req.user.username});
+    game.createGame(req.session.lobbyID, function(game_id) {
+	  	req.session.gameID = game_id;
+	    res.render('authenticated/game');
     })
 });
 
-router.get('/lobbies', function (req, res) {
-    Lobbies.allLobbies()
-        .then(lobby => {
-            console.log(lobby);
-        })
+router.get('/exitGame', function (req, res) {
+	game.exitGame(req.user.id, req.session.gameID, function() {
+	  	req.session.gameID = null;
+	    res.render('authenticated/dashboard');
+    })
 });
 
 module.exports = router;

@@ -7,15 +7,8 @@ module.exports = {
       {
         id: {
           type: Sequelize.INTEGER,
-          primaryKey: true
-        },
-        lobby_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'lobbies',
-            key: 'id'
-          }
+          primaryKey: true,
+          autoIncrement: true
         },
         lobby_id: {
           type: Sequelize.INTEGER,

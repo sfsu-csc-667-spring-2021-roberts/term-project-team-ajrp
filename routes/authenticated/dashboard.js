@@ -25,7 +25,6 @@ router.get('/lobbies', function (req, res) {
           }
         })
       })
-      console.log(results);
       res.json(results);
     })
 })

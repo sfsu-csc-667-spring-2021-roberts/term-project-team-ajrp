@@ -22,6 +22,7 @@ var testsRouter = require('./routes/tests');
 var authRouter = require('./routes/unauthenticated/auth');
 
 var dashboardRouter = require('./routes/authenticated/dashboard');
+var gameRouter = require('./routes/authenticated/game');
 
 var app = express();
 
@@ -57,6 +58,7 @@ app.use('/tests', testsRouter);
 
 // authenticated routes
 app.use('/dashboard', isLoggedIn, dashboardRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

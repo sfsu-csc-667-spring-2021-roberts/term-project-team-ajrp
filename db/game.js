@@ -5,7 +5,7 @@ const createGame = (player_id, lobby_id, next) => {
   var playerCount = lobbies.countPlayers();
   var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
   db.one(query).then((info) => {
-    next({id: info.id, gameName: newName});
+    next({id: info.id});
   }).catch((error) => {
     console.log(error);
   });
@@ -23,8 +23,4 @@ const countPlayers = () => {
   )
 }
 
-<<<<<<< HEAD
-module.exports = { createLobby, allLobbies };
-=======
 module.exports = { createGame, allLobbies, countPlayers };
->>>>>>> 6a67705649839b2e8f966006d4478223c5bf3347

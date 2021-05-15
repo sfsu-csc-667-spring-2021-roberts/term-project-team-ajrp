@@ -3,16 +3,12 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      'lobbies',
+      'lobbies_members',
       {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true
-        },
-        game_name: {
-          type: Sequelize.STRING,
-          allowNull: false
         },
         player_id: {
           type: Sequelize.INTEGER,
@@ -22,16 +18,19 @@ module.exports = {
             key: 'id'
           }
         },
-        createAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.literal('NOW()'),
-          allowNull: false
-        }
+        lobby_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'lobbies',
+            key: 'id'
+          }
+        },
       }
     );
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('lobbies');
+    return queryInterface.dropTable('lobbies_members');
   }
 };

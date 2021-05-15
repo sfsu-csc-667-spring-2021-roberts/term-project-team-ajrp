@@ -3,38 +3,34 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      'games',
+      'deck',
       {
         id: {
           type: Sequelize.INTEGER,
-          primaryKey: true
+          primaryKey: true, 
+          autoIncrement: true
         },
-        lobby_id: {
+        game_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'lobbies',
+            model: 'games',
             key: 'id'
           }
         },
-        number_of_players: {
+        card_id: {
           type: Sequelize.INTEGER,
-          allowNull: false
-        },
-        createAt: {
-          type: Sequelize.DATE,
-          defaultValue: Sequelize.literal('NOW()'),
-          allowNull: false
-        },
-        ended: {
-          type: Sequelize.BOOLEAN,
-          defaultValue: false
+          allowNull: false,
+          references: {
+            model: 'cards',
+            key: 'id'
+          }
         }
       }
     );
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('games');
+    return queryInterface.dropTable('deck');
   }
 };

@@ -5,9 +5,14 @@ module.exports = {
     return queryInterface.createTable(
       'lobbies',
       {
+        id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
         game_name: {
           type: Sequelize.STRING,
-          allowNull: false,
+          allowNull: false
         },
         player_id: {
           type: Sequelize.INTEGER,
@@ -20,10 +25,7 @@ module.exports = {
         game_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          references: {
-            model: 'games',
-            key: 'id'
-          }
+          autoIncrement: true
         },
         createAt: {
           type: Sequelize.DATE,

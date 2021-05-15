@@ -1,13 +1,14 @@
 const db = require('./connection');
+const lobbies = require('./lobbies');
 
 const createGame = (player_id, lobby_id, next) => {
-  var newName = "Game of "+username;
-  var query = "INSERT INTO lobbies (player_id, game_name) VALUES ("+player_id+", '"+newName+"') RETURNING id;";
+  var playerCount = lobbies.countPlayers();
+  var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
   db.one(query).then((info) => {
-    next({id: info.id, gameName: newName});
+    next({id: info.id});
   }).catch((error) => {
     console.log(error);
-  })
+  });
 }
 
 const allLobbies = () => {

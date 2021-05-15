@@ -16,9 +16,9 @@ const allLobbies = () => {
   );
 }
 
-const countPlayers = () => {
+const countPlayers = (lobby_id) => {
   return db.one(
-    'COUNT (*) FROM lobbies GROUP BY game_id'
+    "COUNT (*) FROM lobbies_members WHERE lobby_id = "+lobby_id+""
   )
 }
 

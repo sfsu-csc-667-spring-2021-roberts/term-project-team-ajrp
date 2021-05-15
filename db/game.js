@@ -22,4 +22,4 @@ const countPlayers = () => {
   )
 }
 
-module.exports = { createLobby, allLobbies };
+module.exports = { createGame, allLobbies, countPlayers };

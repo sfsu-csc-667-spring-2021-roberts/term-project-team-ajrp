@@ -8,7 +8,8 @@
     "db:create:migration": "npx sequelize migration:generate --name ",
     "db:migrate": "npx sequelize db:migrate",
     "db:rollback": "npx sequelize db:migrate:undo",
-    "postinstall": "npx sequelize db:migrate"
+    "postinstall": "npx sequelize db:migrate",
+    "db:migrate:undo:all": "npx sequelize db:migrate:undo:all --to migrations/20210314170250-first-migration.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

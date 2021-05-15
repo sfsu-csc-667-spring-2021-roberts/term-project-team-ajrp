@@ -2,11 +2,10 @@ const db = require('./connection');
 
 const create = (username, password) => {
   //returns details
-  return db.one(
-    'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username', [
-    username,
-    password
-  ])
+  var query = "INSERT INTO users (username, password) VALUES ('"+username+"', '"+password+"') RETURNING id, username;"
+  db.one(query).then((user) => {
+    return user;
+  })
 }
 
 const findUsername = (username) => {

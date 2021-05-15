@@ -35,6 +35,7 @@ app.use(
     //possibly move into .env
     secret: 'justsomesecretkey',
     resave: false,
+    saveUninitialized: false
     
 }))
 app.use(passport.initialize());

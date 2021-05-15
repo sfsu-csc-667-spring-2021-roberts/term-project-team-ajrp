@@ -1,10 +1,13 @@
 const db = require('./connection');
 
-const createLobby = (player_id) => {
-  return db.none(
-    'INSERT INTO lobbies (player_id) VALUES ($1)', [
-    player_id
-  ]);
+const createLobby = (player_id, username, next) => {
+  var newName = "Game of "+username;
+  var query = "INSERT INTO lobbies (player_id, game_name) VALUES ("+player_id+", '"+newName+"') RETURNING id;";
+  db.one(query).then((info) => {
+    next({id: info.id, gameName: newName});
+  }).catch((error) => {
+    console.log(error);
+  })
 }
 
 const allLobbies = () => {
@@ -15,7 +18,7 @@ const allLobbies = () => {
 
 const countPlayers = () => {
   return db.one(
-    'COUNT (*) FROM lobbies'
+    'COUNT (*) FROM lobbies GROUP BY game_id'
   )
 }
 

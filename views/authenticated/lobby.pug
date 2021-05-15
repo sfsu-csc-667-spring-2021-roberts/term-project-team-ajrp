@@ -8,9 +8,9 @@ block content
     form(action='/dashboard/updateLobbyName' method="POST")
         input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
         input(type="submit" name="change-name" value="Change Lobby")
-    form(action='/game/startGame' method="POST")
+    form(action='/game/startGame' method="GET")
         input(type="submit" name="startGame" value="Start Game")
-    form(action='/game/exitLobby' method="POST")
+    form(action='/game/exitLobby' method="GET")
         input(type="submit" name="exit" value="Exit")
 
     script(src="/scripts/dashboard.js")

@@ -1,13 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-const game = require('../../db/').Games
+const game = require('../../db/').Games;
 
-router.get('/', function (req, res, next) {
-    res.render('authenticated/dashboard', {username: req.user.username});
-});
-
-router.post('/startGame', function (req, res) {
+router.get('/startGame', function (req, res) {
     game.createGame(req.session.lobbyID, function(game_id) {
 	  	req.session.gameID = game_id;
 	    res.render('authenticated/game');

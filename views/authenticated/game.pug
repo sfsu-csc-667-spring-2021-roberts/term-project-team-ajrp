@@ -5,12 +5,11 @@ block content
     h3 Current Players:
     p #{username}
     br
-    form(action='/dashboard/updateLobbyName' method="POST")
-        input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
+    form(action='/game/pullDeck' method="GET")
         input(type="submit" name="change-name" value="Change Lobby")
-    form(action='/startGame' method="POST")
+    form(action='/game/startGame' method="GET")
         input(type="submit" name="startGame" value="Start Game")
-    form(action='/exitGame' method="POST")
+    form(action='/game/exitGame' method="GET")
         input(type="submit" name="exit" value="Exit Game")
 
     script(src="/scripts/dashboard.js")

@@ -13,4 +13,12 @@ block content
     form(action='/game/exitLobby' method="GET")
         input(type="submit" name="exit" value="Exit")
 
-    script(src="/scripts/dashboard.js")
+    h4 Chat:
+    ul(id="messages")
+        form(id="messageForm" onsubmit="sendMessage(e)")
+            input(id="messageInput" autocomplete="off")
+            input(type="submit" name="sendMessage" value="Send")
+
+block scripts
+    script(src="/socket.io/socket.io.js")
+    script(src="/scripts/lobby.js")

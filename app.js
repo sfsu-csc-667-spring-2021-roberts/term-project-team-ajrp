@@ -48,6 +48,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.locals.basedir = path.join(__dirname, 'public');
 
 // home router, will go dashboard if session is detected
 app.use('/', indexRouter, authRouter);

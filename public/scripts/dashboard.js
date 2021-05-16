@@ -1,5 +1,4 @@
-console.log("testing123");
-
+alert("testing123");
 const lobbyList = document.getElementById("lobby");
 
 fetch("/dashboard/lobbies")

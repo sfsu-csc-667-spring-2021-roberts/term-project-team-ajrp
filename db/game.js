@@ -6,10 +6,8 @@ const createGame = (lobby_id, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
     var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
     db.one(query).then((info) => {
-      db.none(cardsSetup).then(() => {
+      cardsSetup(info, function() {
         next(info.id);
-      }).catch((error) => {
-        console.log(error);
       });
     }).catch((error) => {
       console.log(error);

@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    h1 #{gameName}
+    h1 #{gameName} #{gameID}
     h3 Deck:
     form(action='/game/pullDeck' method="GET")
         input(type="submit" name="change-name" value="Change Lobby")

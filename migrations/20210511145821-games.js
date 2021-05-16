@@ -18,14 +18,6 @@ module.exports = {
             key: 'id'
           }
         },
-        lobby_id: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'lobbies',
-            key: 'id'
-          }
-        },
         number_of_players: {
           type: Sequelize.INTEGER,
           allowNull: false

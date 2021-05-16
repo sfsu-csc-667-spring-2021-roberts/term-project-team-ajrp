@@ -1,3 +1,4 @@
+
 var socket = io();
 var data = document.getElementById('info').value;
 socket.emit("joinRoom", data);
@@ -24,15 +25,17 @@ var gameForm = document.getElementById('gameForm');
 
 gameForm.addEventListener('submit', function(e) {
 	e.preventDefault();
-	fetch("/game/createGame").then(() => {
-		socket.emit('enterGame', data);
+	fetch("/game/createGame").then((idInfo) => {
+		console.log(idInfo);
+		socket.emit('enterGame', idInfo.id);
 	}).catch((error) => {
 		console.log(error);
 	});
 });
 
-socket.on('enterGame', function() {
-	axios.get("/game/joinGame").catch((error) => {
+socket.on('enterGame', function(game_id) {
+	console.log(game_id);
+	fetch("/game/"+game_id+"").catch((error) => {
 		console.log(error);
 	});
 });

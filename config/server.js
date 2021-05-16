@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
   	io.to(info.id).emit('newMessage', info.msg);
   });
   socket.on('enterGame', (id) => {
-  	io.to(id).emit('enterGame');
+  	io.to(id).emit('enterGame', id);
   });
 });
 

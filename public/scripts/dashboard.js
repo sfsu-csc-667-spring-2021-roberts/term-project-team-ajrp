@@ -3,5 +3,5 @@ const lobbyList = document.getElementById("lobby");
 
 fetch("/dashboard/lobbies")
   .then(results => {
-    alert(results);
+    console.log(results);
 })

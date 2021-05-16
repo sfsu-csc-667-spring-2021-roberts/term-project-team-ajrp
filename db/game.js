@@ -6,12 +6,27 @@ const createGame = (lobby_id, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
     var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
     db.one(query).then((info) => {
+      console.log(info.id);
       cardsSetup(info, function() {
         next(info.id);
       });
     }).catch((error) => {
       console.log(error);
     });
+  });
+};
+
+const joinGame = (game_id, next) => {
+  var query = "SELECT lobby_id FROM games WHERE id = "+game_id+";";
+  db.one(query).then((lobby_id) => {
+    query = "SELECT game_name FROM lobbies WHERE lobby_id = "+lobby_id+";";
+    db.one(query).then((name) => {
+      next(name);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }).catch((error) => {
+    console.log(error);
   });
 };
 
@@ -49,4 +64,4 @@ const exitGame = (player_id, game_id, next) => {
   });
 };
 
-module.exports = { createGame, exitGame, getPlayers };
+module.exports = { createGame, exitGame, getPlayers, joinGame };

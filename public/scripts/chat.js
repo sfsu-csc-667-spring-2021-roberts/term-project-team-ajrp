@@ -1,13 +1,13 @@
-//var io = require('../../config/server').socket;
+const axios = require('axios');
 var socket = io();
 var data = document.getElementById('info').value;
 socket.emit("joinRoom", data);
 
 var messages = document.getElementById('messages');
-var form = document.getElementById('messageForm');
+var messageForm = document.getElementById('messageForm');
 var input = document.getElementById('messageInput');
 
-form.addEventListener('submit', function(e) {
+messageForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 	if (input.value) {
 		socket.emit('newMessage', {msg: input.value, id: data});
@@ -20,3 +20,19 @@ socket.on('newMessage', function(msg) {
 	item.textContent = msg;
 	messages.appendChild(item);
 });
+
+var gameForm = document.getElementById('gameForm');
+
+gameForm.addEventListener('submit', function(e) {
+	e.preventDefault();
+	socket.emit('enterGame', data);
+});
+
+socket.on('enterGame', function() {
+	axios.get("/game/joinGame").catch((error) => {
+		console.log(error);
+	})
+});
+
+
+

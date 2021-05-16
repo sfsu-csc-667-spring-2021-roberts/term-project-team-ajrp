@@ -8,14 +8,14 @@ block content
     form(action='/dashboard/updateLobbyName' method="POST")
         input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
         input(type="submit" name="change-name" value="Change Lobby")
-    form(action='/game/startGame' method="GET")
+    form(id="gameForm")
         input(type="submit" name="startGame" value="Start Game")
     form(action='/game/exitLobby' method="GET")
         input(type="submit" name="exit" value="Exit")
 
     h4 Chat:
     ul(id="messages")
-        form(id="messageForm" onsubmit="sendMessage(e)")
+        form(id="messageForm")
             input(type="hidden" id="info" value=lobby_id)
             input(id="messageInput" autocomplete="off")
             input(type="submit" name="sendMessage" value="Send")

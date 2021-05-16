@@ -15,6 +15,9 @@ io.on('connection', (socket) => {
   socket.on('newMessage', (info) => {
   	io.to(info.id).emit('newMessage', info.msg);
   });
+  socket.on('enterGame', (id) => {
+  	io.to(id).emit('enterGame');
+  });
 });
 
 module.exports = {server, io, app};

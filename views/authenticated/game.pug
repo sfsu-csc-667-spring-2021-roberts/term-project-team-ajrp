@@ -10,5 +10,14 @@ block content
     h3 Enemy Cards:
     form(action='/game/exitGame' method="GET")
         input(type="submit" name="exit" value="Exit Game")
+        
+    h4 Chat:
+    ul(id="messages")
+        form(id="messageForm")
+            input(type="hidden" id="info" value=gameID)
+            input(id="messageInput" autocomplete="off")
+            input(type="submit" name="sendMessage" value="Send")
 
-    script(src="/scripts/game.js")
+block scripts
+    script(src="/socket.io/socket.io.js")
+    script(src="/scripts/chat.js")

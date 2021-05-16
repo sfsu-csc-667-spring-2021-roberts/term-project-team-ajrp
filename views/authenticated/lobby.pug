@@ -16,9 +16,10 @@ block content
     h4 Chat:
     ul(id="messages")
         form(id="messageForm" onsubmit="sendMessage(e)")
+            input(type="hidden" id="info" value=lobby_id)
             input(id="messageInput" autocomplete="off")
             input(type="submit" name="sendMessage" value="Send")
 
 block scripts
     script(src="/socket.io/socket.io.js")
-    script(src="/scripts/lobby.js")
+    script(src="/scripts/chat.js")

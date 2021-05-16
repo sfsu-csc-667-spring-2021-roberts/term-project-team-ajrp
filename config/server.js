@@ -9,8 +9,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('newMessage', (msg) => {
-  	io.emit('newMessage', msg);
+  socket.on('joinRoom', (id) => {
+    socket.join(id);
+  });
+  socket.on('newMessage', (info) => {
+  	io.to(info.id).emit('newMessage', info.msg);
   });
 });
 

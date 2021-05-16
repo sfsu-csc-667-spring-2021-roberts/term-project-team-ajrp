@@ -12,7 +12,7 @@ router.post('/create-lobby', function (req, res) {
     Lobbies.createLobby(req.user.id, req.user.username, function(lobbyInfo) {
 	  	req.session.lobbyID = lobbyInfo.id;
 	  	req.session.gameName = lobbyInfo.gameName;
-	    res.render('authenticated/lobby', {gameName: lobbyInfo.gameName, username: req.user.username});
+	    res.render('authenticated/lobby', {lobby_id: lobbyInfo.id, gameName: lobbyInfo.gameName, username: req.user.username});
     })
 })
 

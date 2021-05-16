@@ -10,13 +10,10 @@ const createLobby = (player_id, username, next) => {
   })
 }
 
-const allLobbies = (next) => {
-  var query = "SELECT * FROM lobbies;";
-  db.any(query).then((results) => {
-    next(results);
-  }).catch((error) => {
-    console.log(error);
-  });
+const allLobbies = () => {
+  return db.any(
+    'SELECT * FROM lobbies'
+  );
 }
 
 const countPlayers = (lobby_id, next) => {

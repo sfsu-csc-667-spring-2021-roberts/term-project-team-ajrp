@@ -24,7 +24,7 @@ var gameForm = document.getElementById('gameForm');
 
 gameForm.addEventListener('submit', function(e) {
 	e.preventDefault();
-	axios.get("/game/createGame").then(() => {
+	fetch("/game/createGame").then(() => {
 		socket.emit('enterGame', data);
 	}).catch((error) => {
 		console.log(error);

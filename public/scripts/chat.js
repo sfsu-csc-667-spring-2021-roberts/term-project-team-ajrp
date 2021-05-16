@@ -1,4 +1,3 @@
-const axios = require('axios');
 var socket = io();
 var data = document.getElementById('info').value;
 socket.emit("joinRoom", data);
@@ -25,13 +24,17 @@ var gameForm = document.getElementById('gameForm');
 
 gameForm.addEventListener('submit', function(e) {
 	e.preventDefault();
-	socket.emit('enterGame', data);
+	axios.get("/game/createGame").then(() => {
+		socket.emit('enterGame', data);
+	}).catch((error) => {
+		console.log(error);
+	});
 });
 
 socket.on('enterGame', function() {
 	axios.get("/game/joinGame").catch((error) => {
 		console.log(error);
-	})
+	});
 });
 
 

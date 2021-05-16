@@ -16,19 +16,28 @@ router.post('/create-lobby', function (req, res) {
     })
 })
 
-router.get('/lobbies', function (req, res) {
+function getLobbyNames(lobbies, next) {
   let results = [];
-  Lobbies.allLobbies()
-    .then(lobby => {
-      lobby.forEach(entry => {
-        Object.entries(entry).forEach(([key, value]) => {
-          if(key === 'game_name') {
-            results.push({game_name: `${value}`})
-          }
-        })
-      })
-      res.json(results);
+  var itemsProcessed = 0;
+  lobbies.forEach(entry => {
+    itemsProcessed += 1;
+    Object.entries(entry).forEach(([key, value]) => {
+      if(key === 'game_name') {
+        results.push({game_name: `${value}`})
+      }
+      if(itemsProcessed === lobbies.length) {
+        next(results);
+      }
     })
+  })
+}
+
+router.get('/lobbies', function (req, res) {
+  Lobbies.allLobbies(function(lobby) {
+    getLobbyNames(lobby, function(results) {
+      res.send(results);
+    })
+  });
 })
 
 module.exports = router;

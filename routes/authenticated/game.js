@@ -18,8 +18,16 @@ router.get('/g/:gameID', function (req, res) {
     })
 });
 
-router.get('/cardsOwn', function (req, res) {
-	res.send(req.session.cards);
+router.get('/getFirstCards/:gameID/', function (req, res) {
+    game.getFirstCards(req.user.id, req.params.gameID, function(cardInfo) {
+	    res.json(cardInfo);
+    })
+});
+
+router.get('/playCard/:gameID/:cardID', function (req, res) {
+    game.playCard(req.params.gameID, req.params.cardID, function() {
+	    res.json({status: "good"});
+    })
 });
 
 router.get('/exitGame', function (req, res) {

@@ -6,7 +6,7 @@ const createGame = (lobby_id, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
     var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
     db.one(query).then((info) => {
-      cardsSetup(info, function() {
+      cardsSetup(info, playerCount, function() {
         next(info.id);
       });
     }).catch((error) => {
@@ -24,6 +24,30 @@ const joinGame = (game_id, next) => {
     }).catch((error) => {
       console.log(error);
     });
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+const getFirstCards = (player_id, game_id, next) => {
+  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" LIMIT 4) RETURNING *";
+  db.any(query).then((info) => {
+    query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name = 'Defuse' AND owner = -1 LIMIT 1) RETURNING *";
+    db.one(query).then((defuseInfo) => {
+      info.push(defuseInfo);
+      next(info);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+const playCard = (game_id, card_id, next) => {
+  var query = "UPDATE cards SET owner = -2 WHERE id = (SELECT id FROM cards WHERE game_id = "+game_id+" AND id = "+card_id+")";
+  db.none(query).then(() => {
+    next();
   }).catch((error) => {
     console.log(error);
   });
@@ -63,4 +87,4 @@ const exitGame = (player_id, game_id, next) => {
   });
 };
 
-module.exports = { createGame, exitGame, getPlayers, joinGame };
+module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard };

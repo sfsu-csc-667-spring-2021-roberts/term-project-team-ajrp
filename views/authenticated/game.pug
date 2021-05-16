@@ -2,6 +2,7 @@ extends layout
 
 block content
     h1 #{gameName} #{gameID}
+    input(type="hidden" id="idInput" value=gameID)
     h3 Deck:
     form(action='/game/pullDeck' method="GET")
         input(type="submit" name="pullDeck" value="Pull Deck")
@@ -10,7 +11,7 @@ block content
     h3 Enemy Cards:
     form(action='/game/exitGame' method="GET")
         input(type="submit" name="exit" value="Exit Game")
-        
+
     h4 Chat:
     ul(id="messages")
         form(id="messageForm")
@@ -21,3 +22,4 @@ block content
 block scripts
     script(src="/socket.io/socket.io.js")
     script(src="/scripts/chat.js")
+    script(src="/scripts/game.js")

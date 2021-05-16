@@ -4,15 +4,13 @@ var router = express.Router();
 const game = require('../../db/').Games;
 
 router.get('/createGame', function (req, res) {
-	console.log("here here");
     game.createGame(req.session.lobbyID, function(game_id) {
-    	console.log(game_id);
 	  	req.session.gameID = game_id;
-	    res.send({id: game_id});
+	    res.json({lobby: req.session.lobbyID, game: game_id});
     })
 });
 
-router.get('/game/:gameID', function (req, res) {
+router.get('/g/:gameID', function (req, res) {
     game.joinGame(req.params.gameID, function(gameName) {
 	  	req.session.gameID = req.params.gameID;
 	  	req.session.gameName = gameName;
@@ -27,6 +25,8 @@ router.get('/cardsOwn', function (req, res) {
 router.get('/exitGame', function (req, res) {
 	game.exitGame(req.user.id, req.session.gameID, function() {
 	  	req.session.gameID = null;
+	  	req.session.gameName = null;
+	  	req.session.lobbyID = null;
 	    res.render('authenticated/dashboard');
     })
 });

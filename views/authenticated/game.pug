@@ -4,7 +4,7 @@ block content
     h1 #{gameName} #{gameID}
     h3 Deck:
     form(action='/game/pullDeck' method="GET")
-        input(type="submit" name="change-name" value="Change Lobby")
+        input(type="submit" name="pullDeck" value="Pull Deck")
     h3 Your Cards:
     div(id="cardOwn")
     h3 Enemy Cards:

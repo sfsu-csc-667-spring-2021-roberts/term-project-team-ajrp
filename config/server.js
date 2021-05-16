@@ -15,8 +15,8 @@ io.on('connection', (socket) => {
   socket.on('newMessage', (info) => {
   	io.to(info.id).emit('newMessage', info.msg);
   });
-  socket.on('enterGame', (id) => {
-  	io.to(id).emit('enterGame', id);
+  socket.on('enterGame', (info) => {
+  	io.to(info.lobby.toString()).emit('enterGame', info.game);
   });
 });
 

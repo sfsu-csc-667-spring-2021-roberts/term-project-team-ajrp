@@ -33,7 +33,6 @@ const allLobbies = () => {
 const countPlayers = (lobby_id, next) => {
   var query = "SELECT COUNT(*) FROM lobbies_members WHERE lobby_id = "+lobby_id+";";
   db.one(query).then((info) => {
-    console.log(info);
     next(info.count);
   }).catch((error) => {
     console.log(error);

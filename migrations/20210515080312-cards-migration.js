@@ -10,14 +10,29 @@ module.exports = {
           primaryKey: true, 
           autoIncrement: true
         },
-        imageURL: {
+        image_url: {
           type: Sequelize.STRING,
           allowNull: false
         },
         name: {
           type: Sequelize.STRING,
+          allowNull: false
+        },
+        function: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
+        owner: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
+        game_id: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true
+          references: {
+            model: 'games',
+            key: 'id'
+          }
         }
       }
     );

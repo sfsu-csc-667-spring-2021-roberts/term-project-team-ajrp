@@ -2,14 +2,13 @@ extends layout
 
 block content
     h1 #{gameName}
-    h3 Current Players:
-    p #{username}
-    br
+    h3 Deck:
     form(action='/game/pullDeck' method="GET")
         input(type="submit" name="change-name" value="Change Lobby")
-    form(action='/game/startGame' method="GET")
-        input(type="submit" name="startGame" value="Start Game")
+    h3 Your Cards:
+    div(id="cardOwn")
+    h3 Enemy Cards:
     form(action='/game/exitGame' method="GET")
         input(type="submit" name="exit" value="Exit Game")
 
-    script(src="/scripts/dashboard.js")
+    script(src="/scripts/game.js")

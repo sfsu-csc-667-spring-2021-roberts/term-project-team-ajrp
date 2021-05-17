@@ -87,7 +87,7 @@ function groupEnemyCards() {
 	});
 }
 
-groupEnemyCards();
+//groupEnemyCards();
 
 function removeEnemyCard(item) {
 	listEnemies.forEach((element) => {
@@ -121,6 +121,6 @@ socket.on('/cardPlayed', function(ownerJason) {
 	putDownCard(ownerJason);
 });
 
-
+setTimeout(groupEnemyCards, 100);
 
 

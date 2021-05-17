@@ -47,16 +47,6 @@ function addOwnCard(item) {
 	newLabel.textContent = item.name;
 	newForm.appendChild(newLabel);
 	var newInput = document.createElement('input');
-	newInput.type = "hidden";
-	newInput.setAttribute("name", "id");
-	newInput.value = item.id;
-	newForm.appendChild(newInput);
-	newInput = document.createElement('input');
-	newInput.type = "hidden";
-	newInput.setAttribute("name", "function");
-	newInput.value = item.function;
-	newForm.appendChild(newInput);
-	newInput = document.createElement('input');
 	newInput.type = "submit";
 	newInput.setAttribute("name", "submit");
 	newInput.value = "Play Card";

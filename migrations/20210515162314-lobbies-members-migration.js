@@ -20,11 +20,7 @@ module.exports = {
         },
         lobby_id: {
           type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'lobbies',
-            key: 'id'
-          }
+          allowNull: false
         },
       }
     );

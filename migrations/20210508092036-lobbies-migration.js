@@ -22,7 +22,7 @@ module.exports = {
             key: 'id'
           }
         },
-        createAt: {
+        create_at: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal('NOW()'),
           allowNull: false

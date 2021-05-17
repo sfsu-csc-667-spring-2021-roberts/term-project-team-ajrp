@@ -5,38 +5,25 @@ var io = require('../../config/server').io;
 const Lobbies = require('../../db/').Lobbies
 
 router.get('/', function (req, res, next) {
-    res.render('authenticated/dashboard', {username: req.user.username});
+  res.render('authenticated/dashboard', {username: req.user.username});
 })
 
-router.post('/create-lobby', function (req, res) {
-    Lobbies.createLobby(req.user.id, req.user.username, function(lobbyInfo) {
-	  	req.session.lobbyID = lobbyInfo.id;
-	  	req.session.gameName = lobbyInfo.gameName;
-	    res.render('authenticated/lobby', {lobby_id: lobbyInfo.id, gameName: lobbyInfo.gameName, username: req.user.username});
-    })
+router.get('/createLobby', function (req, res) {
+  Lobbies.createLobby(req.user.id, req.user.username, function(lobbyInfo) {
+    res.json(lobbyInfo);
+  })
 })
 
-router.post('/lobby/:lobbyID', function (req, res) {
-    Lobbies.joinLobby(req.user.id, req.params.lobbyID, function(gameName) {
-      req.session.lobbyID = req.params.lobbyID;
-      req.session.gameName = gameName;
-      res.render('authenticated/lobby', {lobby_id: req.params.lobbyID, gameName: gameName, username: req.user.username});
-    })
+router.get('/lobby/:lobbyID', function (req, res) {
+  Lobbies.joinLobby(req.user.id, req.params.lobbyID, function(gameName) {
+    res.render('authenticated/lobby', {lobby_id: req.params.lobbyID, gameName: gameName.game_name, username: req.user.username});
+  });
 })
 
 router.get('/lobbies', function (req, res) {
-  let results = [];
-  Lobbies.allLobbies()
-    .then(lobby => {
-      lobby.forEach(entry => {
-        Object.entries(entry).forEach(([key, value]) => {
-          if(key === 'game_name') {
-            results.push({game_name: `${value}`})
-          }
-        })
-      })
-      res.json(results);
-    })
+  Lobbies.allLobbies(function(lobbiesInfo) {
+    res.json(lobbiesInfo);
+  });
 })
 
 module.exports = router;

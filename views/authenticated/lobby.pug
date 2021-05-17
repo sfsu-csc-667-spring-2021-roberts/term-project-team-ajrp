@@ -2,6 +2,8 @@ extends layout
 
 block content
     h1 #{gameName}
+    input(type="hidden" id="nameInfo" value=gameName)
+    input(type="hidden" id="lobby_id" value=lobby_id)
     h3 Current Players:
     p #{username}
     br

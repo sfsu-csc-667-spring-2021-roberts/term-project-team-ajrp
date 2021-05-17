@@ -3,18 +3,17 @@ var router = express.Router();
 
 const game = require('../../db/').Games;
 
-router.get('/createGame', function (req, res) {
-    game.createGame(req.session.lobbyID, function(game_id) {
-	  	req.session.gameID = game_id;
-	    res.json({lobby: req.session.lobbyID, game: game_id});
+router.get('/createGame/:name/:lobbyID', function (req, res) {
+	console.log(req.params.name);
+	console.log(req.params.lobbyID);
+    game.createGame(req.params.lobbyID, req.params.name, function(game_id) {
+	    res.json({lobby: req.params.lobbyID, game: game_id});
     })
 });
 
 router.get('/g/:gameID', function (req, res) {
     game.joinGame(req.params.gameID, function(gameName) {
-	  	req.session.gameID = req.params.gameID;
-	  	req.session.gameName = gameName;
-	    res.render('authenticated/game', {gameName: req.session.gameName, gameID: req.params.gameID, uid: req.user.id});
+	    res.render('authenticated/game', {gameName: gameName, gameID: req.params.gameID, uid: req.user.id});
     })
 });
 

@@ -71,18 +71,12 @@ getFirstCards();
 
 function addEnemyCard(item) {
 	listEnemies.forEach((element) => {
-		if (element.name === item.owner) {
+		if (element.getAttribute("name") == item.owner) {
 			var newLabel = document.createElement('label');
 			newLabel.textContent = "Hidden Card";
 			element.appendChild(newLabel);
-		}
-	});
-}
-
-function removeEnemyCard(item) {
-	listEnemies.forEach((element) => {
-		if (element.name === item.owner) {
-			element.removeChild(element.childNodes[0]);
+			var breaku = document.createElement('br');
+			element.appendChild(breaku);
 		}
 	});
 }
@@ -94,6 +88,14 @@ function groupEnemyCards() {
 }
 
 groupEnemyCards();
+
+function removeEnemyCard(item) {
+	listEnemies.forEach((element) => {
+		if (element.name === item.owner) {
+			element.removeChild(element.childNodes[0]);
+		}
+	});
+}
 
 function putDownCard(item) {
 	discard.style.display = "initial";

@@ -28,7 +28,7 @@ const joinGame = (game_id, next) => {
 };
 
 const getFirstCards = (player_id, game_id, next) => {
-  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name <> 'Exploding Kitten' AND name <> 'Defuse' ORDER BY deck_order LIMIT 4) RETURNING *";
+  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name <> 'Exploding Kitten' AND name <> 'Defuse' AND owner = -1 ORDER BY deck_order LIMIT 4) RETURNING *";
   db.any(query).then((info) => {
     query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name = 'Defuse' AND owner = -1 LIMIT 1) RETURNING *";
     db.one(query).then((defuseInfo) => {
@@ -53,7 +53,7 @@ const deck = (player_id, game_id, next) => {
 
 const getEnemyCards = (player_id, game_id, next) => {
   var query = "SELECT owner FROM cards WHERE game_id = "+game_id+" AND owner <> -1 AND owner <> -2 AND owner <> "+player_id+"";
-  db.one(query).then((info) => {
+  db.many(query).then((info) => {
     next(info);
   }).catch((error) => {
     console.log(error);

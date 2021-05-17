@@ -2,6 +2,7 @@ extends layout
 
 block content
     h1 #{gameName}
+    h3(id="turn")
     input(type="hidden" id="game_id" value=gameID)
     input(type="hidden" id="player_id" value=uid)
     h3 Deck:

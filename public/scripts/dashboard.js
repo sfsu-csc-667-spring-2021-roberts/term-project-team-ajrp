@@ -18,9 +18,11 @@ createForm.addEventListener('submit', function(e) {
 });
 
 function addLobby(item) {
+	var newLi = document.createElement('li');
+	lobbyList.appendChild(newLi);
 	var newForm = document.createElement('form');
 	newForm.className = "lobbies-form";
-	lobbyList.appendChild(newForm);
+	newLi.appendChild(newForm);
 	var newLabel = document.createElement('label');
 	newLabel.setAttribute("for", "id");
 	newLabel.textContent = item.game_name + " created at: " + item.create_at.toString() + " by " + item.username + " - ";

@@ -5,6 +5,7 @@ const enemy3 = document.getElementById("enemy3");
 const enemy4 = document.getElementById("enemy4");
 const enemy5 = document.getElementById("enemy5");
 const discarded = document.getElementById("discarded");
+const turn = document.getElementById("turn");
 var listEnemies = [];
 var listEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 var gameID = document.getElementById('game_id').value;

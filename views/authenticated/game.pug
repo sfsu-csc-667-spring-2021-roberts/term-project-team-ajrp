@@ -3,17 +3,20 @@ extends layout
 block content
     h1 #{gameName}
     h3(id="turn")
+    h2(id="explode")
     input(type="hidden" id="game_id" value=gameID)
     input(type="hidden" id="player_id" value=uid)
+    input(type="hidden" id="username" value=uname)
     input(type="hidden" id="starter" value=starter)
     input(type="hidden" id="toPlay" value="1")
     h3 Deck:
     form(id="deck")
-        input(type="submit" name="pullDeck" value="Pull Deck")
+        input(type="submit" id="pullDeck" name="pullDeck" value="Pull Deck")
     h3 Discarded:
     div(id="discarded" display="hidden")
         label(name="discardCard")
     h3 Your Cards:
+    div(id="locationDiv")
     div(id="cardOwn")
     h3 Enemy Cards:
     div(id="enemy1")
@@ -35,4 +38,3 @@ block scripts
     script(src="/socket.io/socket.io.js")
     script(src="/scripts/chat.js")
     script(src="/scripts/game.js")
-    script(src="/scripts/cards.js")

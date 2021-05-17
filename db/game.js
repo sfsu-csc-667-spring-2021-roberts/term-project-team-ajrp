@@ -9,7 +9,8 @@ const createGame = (lobby_id, game_name, next) => {
         var cardCount = playerCount - 1 + 52;
         var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards, game_name) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+", '"+game_name+"') RETURNING id;";
         db.one(query).then((info) => {
-          cards.cardsSetup(info, playerCount, function() {
+          cards.cardsSetup(info, 10
+            , function() {
             next(info.id);
           });
         }).catch((error) => {
@@ -42,6 +43,34 @@ const getFirstCards = (player_id, game_id, next) => {
   }).catch((error) => {
     console.log(error);
   });
+};
+
+const reshuffleExplode = (game_id, option, next) => {
+  cards.countRemaining(game_id, function(remaining) {
+    var query = "SELECT number_of_cards FROM games WHERE id = "+game_id+";";
+    db.one(query).then((numInfo) => {
+      var position = option;
+      if ((position == -2) || (position >= remaining)) {
+        position = numInfo.number_of_cards;
+      } else if (position == -1) {
+        position = Math.floor(numInfo.number_of_cards/2);
+      } else {
+        position += (numInfo.number_of_cards-remaining-1)
+      }
+      cards.incrementFrom(game_id, position, function() {
+        cards.addExplode(game_id, position, function() {
+          query = "UPDATE games SET number_of_cards = number_of_cards + 1 WHERE id = "+game_id+";";
+          db.none(query).then(() => {
+            next();
+          }).catch((error) => {
+            console.log(error);
+          });
+        })
+      });
+    }).catch((error) => {
+      console.log(error);
+    });
+  })
 };
 
 const deck = (player_id, game_id, next) => {
@@ -105,4 +134,4 @@ const exitGame = (player_id, game_id, next) => {
   });
 };
 
-module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard, deck, getEnemyCards };
+module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard, deck, getEnemyCards, reshuffleExplode };

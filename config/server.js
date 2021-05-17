@@ -48,8 +48,11 @@ io.on('connection', (socket) => {
   socket.on('/playExplode', (info) => {
   	io.to(info.game.toString()).emit('/playExplode', info);
   });
+  socket.on('/playerExploded', (info) => {
+  	io.to(info.game.toString()).emit('/playerExploded', info);
+  });
   socket.on('/playDefuse', (info) => {
-  	io.to(info.game.toString()).emit('/playExplode', info);
+  	io.to(info.game.toString()).emit('/playDefuse', info);
   });
 });
 

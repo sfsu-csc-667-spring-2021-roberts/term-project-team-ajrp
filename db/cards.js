@@ -12,6 +12,33 @@ function shuffle(array) {
 	return array;
 }
 
+const incrementFrom = (game_id, position, next) => {
+  var query = "UPDATE cards SET deck_order = deck_order + 1 WHERE game_id = "+game_id+" AND deck_order > "+position+";";
+  db.none(query).then(() => {
+    next();
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+const addExplode = (game_id, position, next) => {
+	var query = "INSERT INTO cards (game_id, name, image_url, function, owner, deck_order) VALUES ("+game_id+", 'Exploding Kitten', 'images/explode-card', '/playExplode', -1, "+position+");";
+  db.none(query).then(() => {
+    next();
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+const countRemaining = (game_id, next) => {
+  var query = "SELECT COUNT(*) FROM cards WHERE game_id = "+game_id+" AND owner = -1;";
+  db.one(query).then((info) => {
+    next(info.count);
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
 const cardsSetup = (info, playerCount, next) => {
 	var randomArray = [];
 	var totalCount = playerCount - 1 + 52;
@@ -35,4 +62,4 @@ const cardsSetup = (info, playerCount, next) => {
       });
 }
 
-module.exports = {cardsSetup};
+module.exports = {cardsSetup, incrementFrom, countRemaining, addExplode};

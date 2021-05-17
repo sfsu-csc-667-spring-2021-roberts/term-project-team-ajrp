@@ -28,9 +28,35 @@ body {
 .user-toolbar {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   width: 100%;
+  height: 50px;
 }
 
-.lobby_list {
+.lobby-list {
+  margin-top: 30px;
+}
 
+#lobby{
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  display: block;
+}
+
+#lobby li {
+  margin: 10px 0;
+}
+
+#lobby li form{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#dashboard-logo {
+  display: block;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
 }

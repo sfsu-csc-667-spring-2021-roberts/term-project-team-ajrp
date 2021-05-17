@@ -3,12 +3,13 @@ extends layout
 block content
     div(class="dashboard-wrapper")
         div(class="dashboard-container")
+            img(src="/assets/exploding-kitten.png", alt="Exploding Kitten" id="dashboard-logo")
             h1 Welcome back #{username}!
             div(class="user-toolbar")
-                form(action='/logout' method="GET")
-                    input(type="submit" name="logout" value="Logout")
                 form(id="createLobby")
                     input(type="submit" name="createLobby" value="Create Lobby")
+                form(action='/logout' method="GET")
+                    input(type="submit" name="logout" value="Logout")
             div(class="lobby-list")
                 form(id="pageForm" action='/g/0' mehod="GET")
                 ul(id="lobby")

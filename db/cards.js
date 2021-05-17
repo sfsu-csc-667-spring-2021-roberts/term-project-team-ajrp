@@ -13,7 +13,16 @@ function shuffle(array) {
 }
 
 const incrementFrom = (game_id, position, next) => {
-  var query = "UPDATE cards SET deck_order = deck_order + 1 WHERE game_id = "+game_id+" AND deck_order > "+position+";";
+  var query = "UPDATE cards SET deck_order = deck_order + 1 WHERE game_id = "+game_id+" AND deck_order >= "+position+";";
+  db.none(query).then(() => {
+    next();
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+const deleteCards = (game_id, next) => {
+  var query = "DELETE FROM cards WHERE game_id = "+game_id+";";
   db.none(query).then(() => {
     next();
   }).catch((error) => {
@@ -62,4 +71,4 @@ const cardsSetup = (info, playerCount, next) => {
       });
 }
 
-module.exports = {cardsSetup, incrementFrom, countRemaining, addExplode};
+module.exports = {cardsSetup, incrementFrom, countRemaining, addExplode, deleteCards};

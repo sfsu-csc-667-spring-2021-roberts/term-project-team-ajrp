@@ -21,8 +21,8 @@ router.get('/getFirstCards/:gameID/', function (req, res) {
     })
 });
 
-router.get('/removePlayer/:gameID/:uid', function (req, res) {
-    game.playCard(req.params.gameID, req.params.uid, function() {
+router.get('/removePlayer/:gameID', function (req, res) {
+    game.removePlayer(req.params.gameID, req.user.id, function() {
 	    res.json({status: "good"});
     })
 });
@@ -40,30 +40,27 @@ router.get('/reshuffleExplode/:gameID/:option', function (req, res) {
     })
 });
 
-router.get('/deck/:gameID/', function (req, res) {
+router.get('/deck/:gameID', function (req, res) {
     game.deck(req.user.id, req.params.gameID, function(cardInfo) {
 	    res.json(cardInfo);
     })
 });
 
-router.get('/getPlayers/:gameID/', function (req, res) {
+router.get('/getPlayers/:gameID', function (req, res) {
     game.getPlayers(req.user.id, req.params.gameID, function(players) {
 	    res.json(players);
     })
 });
 
-router.get('/getEnemyCards/:gameID/', function (req, res) {
+router.get('/getEnemyCards/:gameID', function (req, res) {
     game.getEnemyCards(req.user.id, req.params.gameID, function(ownerInfo) {
 	    res.json(ownerInfo);
     })
 });
 
-router.get('/exitGame', function (req, res) {
-	game.exitGame(req.user.id, req.session.gameID, function() {
-	  	req.session.gameID = null;
-	  	req.session.gameName = null;
-	  	req.session.lobbyID = null;
-	    res.render('authenticated/dashboard');
+router.get('/exitGame/:gameID', function (req, res) {
+	game.exitGame(req.user.id, req.params.gameID, function() {
+	    res.redirect('/dashboard');
     })
 });
 

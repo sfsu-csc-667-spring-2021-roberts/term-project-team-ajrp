@@ -18,6 +18,12 @@ io.on('connection', (socket) => {
   socket.on('/enterGame', (info) => {
   	io.to(info.lobby.toString()).emit('/enterGame', info);
   });
+  socket.on('/left', (info) => {
+  	io.to(info.game.toString()).emit('/left', info);
+  });
+  socket.on('/removed', (info) => {
+  	io.to(info.game.toString()).emit('/removed', info);
+  });
   socket.on('/deck', (info) => {
   	io.to(info.game.toString()).emit('/deck', info);
   });

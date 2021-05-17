@@ -9,6 +9,7 @@ const turn = document.getElementById("turn");
 const explode = document.getElementById("explode");
 var toPlay = document.getElementById('toPlay');
 var pullDeck = document.getElementById('pullDeck');
+var exit = document.getElementById('exit');
 var locationDiv = document.getElementById('locationDiv');
 var listEnemies = [];
 var listEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
@@ -17,6 +18,7 @@ var uid = document.getElementById('player_id').value;
 var starter = document.getElementById('starter').value;
 var username = document.getElementById('username').value;
 var nextPlayer = 0;
+var stillPlaying = true;
 
 async function getResponse(url, next) {
 	let res = await fetch(url);
@@ -41,15 +43,19 @@ function addEnemy(item, index) {
 	});
 }
 
-function getEnemies() {
-	getResponse("/game/getPlayers/"+gameID, function(jason) {
-		jason.forEach(addEnemy);
+function getEnemies(next) {
+	getResponse("/game/getPlayers/"+gameID, async function(jason) {
+		if (jason.length == 1) {
+			announceVictory();
+		} else {
+			await jason.forEach(addEnemy);
+			next();
+		}
 	});
 }
 
-getEnemies();
+getEnemies(function() {return;});
 
-//this one is not complete
 function addOwnCard(item) {
 	var newForm = document.createElement('form');
 	newForm.className = "player-cards";
@@ -165,6 +171,11 @@ async function findIfOwnDefuse() {
 	return found;
 }
 
+function announceVictory() {
+	explode.innerHTML = "You WON!";
+	disableCards();
+}
+
 async function playerDead(info) {
 	explode.innerHTML = info.uname + " EXPLODED!";
 	if (uid == info.owner) {
@@ -172,16 +183,60 @@ async function playerDead(info) {
 		await cardList.childNodes.forEach((element) => {
 			putDownCard({cardID: element.id, cardName: element.childNodes[0].getAttribute("name")});
 		});
-		toPlay.value = 1;
-		var data = {game: gameID, owner: uid, next: nextPlayer};
-		socket.emit("/playSkip", data);
+		toPlay.value = 0;
 	}
 }
 
-function removePlayer() {
-	var url = "/game/removePlayer/"+gameID+"/"+info.owner;
-	getResponse(url, function(jason) { return; });
+exit.addEventListener('submit', function(e) {
+	e.preventDefault();
+	var info = {"owner": uid};
+	if (stillPlaying) {
+		removePlayer(info, function(jason) {
+			if (toPlay.value == 1) {
+				var data = {game: gameID, leaver: username, next: nextPlayer};
+				socket.emit("/removed", data);
+			} else {
+				var data = {game: gameID, leaver: username, next: nextPlayer};
+				socket.emit("/left", data);
+			}
+			var pageForm = document.getElementById('pageForm');
+			var url = "/game/exitGame/"+gameID;
+			pageForm.action = url;
+			pageForm.setAttribute("method", "GET");
+			pageForm.submit();
+		});
+	} else {
+		var pageForm = document.getElementById('pageForm');
+		var url = "/game/exitGame/"+gameID;
+		pageForm.action = url;
+		pageForm.setAttribute("method", "GET");
+		pageForm.submit();
+	}
+});
+
+function removePlayer(info, next) {
+	if (uid == info.owner) {
+		stillPlaying = false;
+		var url = "/game/removePlayer/"+gameID;
+		getResponse(url, function(jason) { 
+			next();
+		});
+	}
 }
+
+socket.on('/removed', function(info) {
+	if (uid != info.leaver && stillPlaying) {
+		getEnemies(function() {
+			findIfTurn(info, 1);
+		});
+	}
+});
+
+socket.on('/left', function(info) {
+	if (uid != info.leaver && stillPlaying) {
+		getEnemies(function() { return;});
+	}
+});
 
 function disableButDefuse(item) {
 	pullDeck.disabled = true;
@@ -328,6 +383,7 @@ deck.addEventListener('submit', function(e) {
 		} else {
 			addOwnCard(jason, 0);
 			if (toPlay.value == 1) {
+				toPlay.value = 0;
 				socket.emit("/deck", {game: gameID, owner: uid, next: nextPlayer});
 			} else {
 				socket.emit("/deck", {game: gameID, owner: uid, next: uid});
@@ -360,7 +416,7 @@ socket.on('/playSkip', function(ownerJason) {
 	if (toPlay.value == 1) {
 		findIfTurn(ownerJason, 1);
 	} else {
-		ownerJason["next"] = uid;
+		ownerJason["next"] = ownerJason.owner;
 		findIfTurn(ownerJason, 1);
 	}
 });
@@ -390,7 +446,10 @@ socket.on('/playerExploded', function(ownerJason) {
 	explode.innerHTML = "Exploding Kitten FOUND!";
 	setTimeout(function() {
 		playerDead(ownerJason);
-		//removePlayer();
+		removePlayer(ownerJason, function() { 
+			var data = {game: gameID, leaver: username, next: nextPlayer};
+			socket.emit("/removed", data);
+		});
 	}, 4000);
 });
 

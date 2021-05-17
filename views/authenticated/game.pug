@@ -24,9 +24,10 @@ block content
     div(id="enemy3")
     div(id="enemy4")
     div(id="enemy5")
-    form(action='/game/exitGame' method="GET")
+    form(id="exit")
         input(type="submit" name="exit" value="Exit Game")
-
+    form(id="pageForm" action='/g/0' mehod="GET")
+    
     h4 Chat:
     ul(id="messages")
         form(id="messageForm")

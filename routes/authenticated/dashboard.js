@@ -26,4 +26,10 @@ router.get('/lobbies', function (req, res) {
   });
 })
 
+router.get('/exitLobby', function (req, res) {
+  Lobbies.createLobby(req.user.id, req.user.username, function(lobbyInfo) {
+    res.json(lobbyInfo);
+  })
+})
+
 module.exports = router;

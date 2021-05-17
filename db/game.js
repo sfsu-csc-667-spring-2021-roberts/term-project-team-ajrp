@@ -101,9 +101,28 @@ const playCard = (game_id, card_id, next) => {
 };
 
 const getPlayers = (player_id, game_id, next) => {
-  var query = "SELECT * FROM lobbies_members WHERE lobby_id = (SELECT lobby_id FROM games WHERE id = "+game_id+");";
+  var query = "SELECT * FROM lobbies_members WHERE lobby_id = (SELECT lobby_id FROM games WHERE id = "+game_id+") AND next <> -1;";
   db.many(query).then((results) => {
     next(results);
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+const removePlayer = (game_id, player_id, next) => {
+  var query = "UPDATE lobbies_members SET next = sub.player_id FROM (SELECT player_id FROM lobbies_members WHERE lobby_id = "+game_id+" AND previous = "+player_id+") AS sub WHERE lobby_id = "+game_id+" AND next = "+player_id+" RETURNING lobbies_members.player_id;";
+  db.one(query).then((info) => {
+    query = "UPDATE lobbies_members SET previous = "+info.player_id+" WHERE lobby_id = "+game_id+" AND previous = "+player_id+";";
+    db.none(query).then(() => {
+      query = "UPDATE lobbies_members SET next = -1 WHERE lobby_id = "+game_id+" AND player_id = "+player_id+";";
+      db.none(query).then(() => {
+        next();
+      }).catch((error) => {
+        console.log(error);
+      })
+    }).catch((error) => {
+      console.log(error);
+    })
   }).catch((error) => {
     console.log(error);
   });
@@ -116,9 +135,11 @@ const exitGame = (player_id, game_id, next) => {
     .then((info) => {
       var newNum = info.number_of_players - 1;
       if (newNum === 0) {
-        db.none("DELETE FROM games WHERE id = "+game_id+"")
-        .then(() => {
-          next();
+        cards.deleteCards(game_id, function() {
+          db.none("DELETE FROM games WHERE id = "+game_id+";")
+          .then(() => {
+            next();
+          })
         })
       } else {
         db.none("UPDATE games SET number_of_players = "+newNum+" WHERE id = "+game_id+"")
@@ -134,4 +155,4 @@ const exitGame = (player_id, game_id, next) => {
   });
 };
 
-module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard, deck, getEnemyCards, reshuffleExplode };
+module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard, deck, getEnemyCards, reshuffleExplode, removePlayer };

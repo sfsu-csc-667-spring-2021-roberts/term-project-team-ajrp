@@ -173,4 +173,48 @@ socket.on('/cardPlayed', function(ownerJason) {
 
 setTimeout(groupEnemyCards, 200);
 
+socket.on('/playNope', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playAttack', function(ownerJason) {
+	turn.innerHTML = "Enemy Turn";
+	disableCards();
+	findIfTurn(ownerJason, 2);
+});
+
+socket.on('/playSkip', function(ownerJason) {
+	if (toPlay.value == 1) {
+		turn.innerHTML = "Enemy Turn";
+		disableCards();
+		findIfTurn(ownerJason, 1);
+	} else {
+		ownerJason["next"] = uid;
+		findIfTurn(ownerJason, 1);
+	}
+});
+
+socket.on('/playFavor', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playShuffle', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playSee', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playSpecial', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playExplode', function(ownerJason) {
+	//do sometiong
+});
+
+socket.on('/playDefuse', function(ownerJason) {
+	//do sometiong
+});
 

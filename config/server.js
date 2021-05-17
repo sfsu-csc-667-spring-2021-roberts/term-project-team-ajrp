@@ -28,11 +28,9 @@ io.on('connection', (socket) => {
   	io.to(info.game.toString()).emit('/playNope', info);
   });
   socket.on('/playAttack', (info) => {
-  	console.log(info);
   	io.to(info.game.toString()).emit('/playAttack', info);
   });
   socket.on('/playSkip', (info) => {
-  	console.log(info);
   	io.to(info.game.toString()).emit('/playSkip', info);
   });
   socket.on('/playFavor', (info) => {

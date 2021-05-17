@@ -8,22 +8,27 @@ block content
             input(type="hidden" id="lobby_id" value=lobby_id)
             input(type="hidden" id="player_id" value=player_id)
             h2 Current Players:
-            p #{username}
-            br
-            form(action='/dashboard/updateLobbyName' method="POST")
-                input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
-                input(type="submit" name="change-name" value="Change Lobby")
+            div(class="current-players")
+                div(class="player-container")
+                    img(src="/assets/kitten-profile.png", alt="Kitten Profile")
+                    p #{username}
+
             form(id="gameForm")
                 input(type="submit" name="startGame" value="Start Game")
+            div(class="change-lobby-container")
+                form(action='/dashboard/updateLobbyName' method="POST")
+                    input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
+                    input(type="submit" name="change-name" value="Change Lobby")
             form(action='/game/exitLobby' method="GET")
                 input(type="submit" name="exit" value="Exit")
             form(id="pageForm" action='/g/0' mehod="GET")
-            h4 Chat:
+        div(class="chat-container")
+            h2 Chat
             ul(id="messages")
-                form(id="messageForm")
-                    input(type="hidden" id="info" value=lobby_id)
-                    input(id="messageInput" autocomplete="off")
-                    input(type="submit" name="sendMessage" value="Send")
+            form(id="messageForm")
+                input(type="hidden" id="info" value=lobby_id)
+                input(id="messageInput" autocomplete="off" placeholder="Send a message")
+                //- input(id="messageSubmit" type="submit" name="sendMessage" value="Send")
 
         block scripts
             script(src="/socket.io/socket.io.js")

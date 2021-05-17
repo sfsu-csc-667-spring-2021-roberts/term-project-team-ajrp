@@ -4,7 +4,7 @@ const enemy2 = document.getElementById("enemy2");
 const enemy3 = document.getElementById("enemy3");
 const enemy4 = document.getElementById("enemy4");
 const enemy5 = document.getElementById("enemy5");
-const discard = document.getElementById("discarded");
+const discarded = document.getElementById("discarded");
 var listEnemies = [];
 var listEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 var gameID = document.getElementById('game_id').value;
@@ -41,6 +41,7 @@ getEnemies();
 function addOwnCard(item) {
 	var newForm = document.createElement('form');
 	newForm.className = "player-cards";
+	newForm.id = item.id;
 	cardList.appendChild(newForm);
 	var newLabel = document.createElement('label');
 	newLabel.setAttribute("for", "id");
@@ -55,7 +56,7 @@ function addOwnCard(item) {
 		e.preventDefault();
 		var url = "/game/playCard/"+gameID+"/"+item.id;
 		getResponse(url, function(jason) {
-			socket.emit('/cardPlayed', {game: gameID, owner: uid});
+			socket.emit('/cardPlayed', {game: gameID, owner: uid, cardID: item.id, cardName: item.name});
 			socket.emit(item.function, {game: gameID, owner: uid, cardID: item.id, cardName: item.name, cardImage: item.image_url});
 		});
 	});
@@ -87,22 +88,27 @@ function groupEnemyCards() {
 	});
 }
 
-//groupEnemyCards();
-
 function removeEnemyCard(item) {
 	listEnemies.forEach((element) => {
-		if (element.name === item.owner) {
+		if (element.getAttribute("name") == item.owner) {
+			element.removeChild(element.childNodes[0]);
 			element.removeChild(element.childNodes[0]);
 		}
 	});
 }
 
 function putDownCard(item) {
-	discard.style.display = "initial";
-	discard.childNodes[0].textContent = item.name;
+	discarded.style.display = "inline";
+	discarded.childNodes[0].textContent = item.cardName;
+	cardList.childNodes.forEach((element, index) => {
+		if (element.getAttribute("id") == item.cardID) {
+			cardList.removeChild(cardList.childNodes[index]);
+		}
+	});
 }
 
 const deck = document.getElementById("deck");
+
 deck.addEventListener('submit', function(e) {
 	e.preventDefault();
 	var url = "/game/deck/"+gameID;
@@ -117,10 +123,10 @@ socket.on('/deck', function(ownerJason) {
 });
 
 socket.on('/cardPlayed', function(ownerJason) {
-	removeEnemyCard(ownerJason, 0);
+	removeEnemyCard(ownerJason);
 	putDownCard(ownerJason);
 });
 
-setTimeout(groupEnemyCards, 100);
+setTimeout(groupEnemyCards, 200);
 
 

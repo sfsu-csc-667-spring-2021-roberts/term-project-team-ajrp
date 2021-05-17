@@ -47,6 +47,10 @@ socket.on('/playExplode', function(ownerJason) {
 	//do sometiong
 });
 
+socket.on('/playDefuse', function(ownerJason) {
+	//do sometiong
+});
+
 
 
 

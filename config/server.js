@@ -48,6 +48,9 @@ io.on('connection', (socket) => {
   socket.on('/playExplode', (info) => {
   	io.to(info.game.toString()).emit('/playExplode', info);
   });
+  socket.on('/playDefuse', (info) => {
+  	io.to(info.game.toString()).emit('/playExplode', info);
+  });
 });
 
 module.exports = {server, io, app};

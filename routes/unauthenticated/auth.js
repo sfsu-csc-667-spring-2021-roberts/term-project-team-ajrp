@@ -38,7 +38,7 @@ router.post('/register', function (req, res, next) {
         else {
           bcrypt.hash(password, 10)
             .then((hashedPassword) => Users.create(username, hashedPassword))
-            .then(() => res.render('authenticated/dashboard'))
+            .then(() => res.redirect('/login'))
             .catch(() => res.render('unauthenticated/register'), { errors: ['Failed to create new user, please try again'] })
         }
       })

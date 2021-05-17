@@ -18,6 +18,14 @@ module.exports = {
             key: 'id'
           }
         },
+        next: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
+        previous: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
         lobby_id: {
           type: Sequelize.INTEGER,
           allowNull: false

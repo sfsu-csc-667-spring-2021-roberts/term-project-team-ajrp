@@ -16,7 +16,7 @@ router.get('/createLobby', function (req, res) {
 
 router.get('/lobby/:lobbyID', function (req, res) {
   Lobbies.joinLobby(req.user.id, req.params.lobbyID, function(gameName) {
-    res.render('authenticated/lobby', {lobby_id: req.params.lobbyID, gameName: gameName.game_name, username: req.user.username});
+    res.render('authenticated/lobby', {lobby_id: req.params.lobbyID, gameName: gameName.game_name, username: req.user.username, player_id: req.user.id});
   });
 })
 

@@ -5,16 +5,18 @@ const cards = require('./cards');
 const createGame = (lobby_id, game_name, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
     lobbies.removeLobby(lobby_id, function() {
-      var cardCount = playerCount - 1 + 52;
-      var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards, game_name) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+", '"+game_name+"') RETURNING id;";
-      db.one(query).then((info) => {
-        cards.cardsSetup(info, playerCount, function() {
-          next(info.id);
+      lobbies.sealLobby(lobby_id, function() {
+        var cardCount = playerCount - 1 + 52;
+        var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards, game_name) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+", '"+game_name+"') RETURNING id;";
+        db.one(query).then((info) => {
+          cards.cardsSetup(info, playerCount, function() {
+            next(info.id);
+          });
+        }).catch((error) => {
+          console.log(error);
         });
-      }).catch((error) => {
-        console.log(error);
       });
-    })
+    });
   });
 };
 
@@ -70,7 +72,7 @@ const playCard = (game_id, card_id, next) => {
 };
 
 const getPlayers = (player_id, game_id, next) => {
-  var query = "SELECT player_id FROM lobbies_members WHERE lobby_id = (SELECT lobby_id FROM games WHERE id = "+game_id+") AND player_id <> "+player_id+";";
+  var query = "SELECT * FROM lobbies_members WHERE lobby_id = (SELECT lobby_id FROM games WHERE id = "+game_id+");";
   db.many(query).then((results) => {
     next(results);
   }).catch((error) => {

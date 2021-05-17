@@ -11,9 +11,9 @@ router.get('/createGame/:name/:lobbyID', function (req, res) {
     })
 });
 
-router.get('/g/:gameID', function (req, res) {
+router.get('/g/:gameID/:starter', function (req, res) {
     game.joinGame(req.params.gameID, function(gameName) {
-	    res.render('authenticated/game', {gameName: gameName, gameID: req.params.gameID, uid: req.user.id});
+	    res.render('authenticated/game', {gameName: gameName, gameID: req.params.gameID, uid: req.user.id, starter: req.params.starter});
     })
 });
 
@@ -36,8 +36,8 @@ router.get('/deck/:gameID/', function (req, res) {
 });
 
 router.get('/getPlayers/:gameID/', function (req, res) {
-    game.getPlayers(req.user.id, req.params.gameID, function(enemiesID) {
-	    res.json(enemiesID);
+    game.getPlayers(req.user.id, req.params.gameID, function(players) {
+	    res.json(players);
     })
 });
 

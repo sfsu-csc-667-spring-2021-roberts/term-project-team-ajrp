@@ -10,6 +10,8 @@ var listEnemies = [];
 var listEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 var gameID = document.getElementById('game_id').value;
 var uid = document.getElementById('player_id').value;
+var starter = document.getElementById('starter').value;
+var nextPlayer = 0;
 
 async function getResponse(url, next) {
 	let res = await fetch(url);
@@ -19,6 +21,10 @@ async function getResponse(url, next) {
 
 //tthis one is noot complete
 function addEnemy(item, index) {
+	if (item.player_id == uid) {
+		nextPlayer = item.next;
+		return;
+	}
 	listEnemies[index].setAttribute("name", item.player_id);
 	listEnemies[index].addEventListener('submit', function(e) {
 		e.preventDefault();
@@ -50,6 +56,7 @@ function addOwnCard(item) {
 	newForm.appendChild(newLabel);
 	var newInput = document.createElement('input');
 	newInput.type = "submit";
+	newInput.disabled = true;
 	newInput.setAttribute("name", "submit");
 	newInput.value = "Play Card";
 	newForm.appendChild(newInput);
@@ -84,6 +91,12 @@ function addEnemyCard(item) {
 }
 
 function groupEnemyCards() {
+	if (starter == uid) {
+		turn.innerHTML = "Your Turn";
+		enableCards();
+	} else {
+		turn.innerHTML = "Enemy Turn";
+	}
 	getResponse("/game/getEnemyCards/"+gameID, function(jason) {
 		jason.forEach(addEnemyCard);
 	});
@@ -108,6 +121,27 @@ function putDownCard(item) {
 	});
 }
 
+function enableCards() {
+	cardList.childNodes.forEach((element, index) => {
+		element.childNodes[1].disabled = false;
+	});
+}
+
+function disableCards() {
+	cardList.childNodes.forEach((element, index) => {
+		if (element.childNodes[0].textContent != "Nope") {
+			element.childNodes[1].disabled = true;
+		}
+	});
+}
+
+function findIfTurn(item) {
+	if (uid == item.next) {
+		turn.innerHTML = "Your Turn";
+		enableCards();
+	} 
+}
+
 const deck = document.getElementById("deck");
 
 deck.addEventListener('submit', function(e) {
@@ -115,11 +149,14 @@ deck.addEventListener('submit', function(e) {
 	var url = "/game/deck/"+gameID;
 	getResponse(url, function(jason) {
 		addOwnCard(jason, 0);
-		socket.emit("/deck", {game: gameID, owner: uid});
+		turn.innerHTML = "Enemy Turn";
+		disableCards();
+		socket.emit("/deck", {game: gameID, owner: uid, next: nextPlayer});
 	});
 });
 
 socket.on('/deck', function(ownerJason) {
+	findIfTurn(ownerJason);
 	addEnemyCard(ownerJason, 0);
 });
 

@@ -1,12 +1,15 @@
 const db = require('./connection');
 const lobbies = require('./lobbies');
-const cardsSetup = require('./setup');
+const cards = require('./cards');
 
 const createGame = (lobby_id, next) => {
   lobbies.countPlayers(lobby_id, function(playerCount) {
-    var query = "INSERT INTO games (lobby_id, number_of_players) VALUES ("+lobby_id+", '"+playerCount+"') RETURNING id;";
+    var cardCount = playerCount - 1 + 52;
+    var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+") RETURNING id;";
     db.one(query).then((info) => {
-      cardsSetup(info, playerCount, function() {
+      console.log(info);
+      cards.cardsSetup(info, playerCount, function() {
+        console.log(info.id);
         next(info.id);
       });
     }).catch((error) => {
@@ -30,7 +33,7 @@ const joinGame = (game_id, next) => {
 };
 
 const getFirstCards = (player_id, game_id, next) => {
-  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" LIMIT 4) RETURNING *";
+  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name <> 'Exploding Kitten' ORDER BY deck_order LIMIT 4) RETURNING *";
   db.any(query).then((info) => {
     query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name = 'Defuse' AND owner = -1 LIMIT 1) RETURNING *";
     db.one(query).then((defuseInfo) => {

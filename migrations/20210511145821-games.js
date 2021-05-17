@@ -22,6 +22,10 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false
         },
+        number_of_cards: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
         createAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal('NOW()'),

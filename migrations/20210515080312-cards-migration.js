@@ -26,6 +26,10 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false
         },
+        deck_order: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
         game_id: {
           type: Sequelize.INTEGER,
           allowNull: false,

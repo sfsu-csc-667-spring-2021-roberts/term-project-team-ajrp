@@ -9,13 +9,13 @@ async function getResponse(url, next) {
 gameForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 	getResponse("/game/createGame", function(jason) {
-		socket.emit('enterGame', jason);
+		socket.emit('/enterGame', jason);
 	});
 });
 
 var pageForm = document.getElementById('pageForm');
 
-socket.on('enterGame', function(game_id) {
+socket.on('/enterGame', function(game_id) {
 	var url = "/game/g/"+game_id+"/";
 	pageForm.action = url;
 	pageForm.submit();

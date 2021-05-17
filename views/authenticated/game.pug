@@ -8,7 +8,8 @@ block content
     form(id="deck")
         input(type="submit" name="pullDeck" value="Pull Deck")
     h3 Discarded:
-    div(id="discarded")
+    div(id="discarded" display="hidden")
+        label(name="discardCard")
     h3 Your Cards:
     div(id="cardOwn")
     h3 Enemy Cards:
@@ -31,3 +32,4 @@ block scripts
     script(src="/socket.io/socket.io.js")
     script(src="/scripts/chat.js")
     script(src="/scripts/game.js")
+    script(src="/scripts/cards.js")

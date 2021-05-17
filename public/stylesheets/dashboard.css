@@ -3,3 +3,34 @@ body {
   margin: 0;
   font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+.dashboard-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(224, 224, 224);
+}
+
+.dashboard-container {
+  width: 50%;
+  min-width: 800px;
+  max-width: 1500px;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 20px 50px;
+}
+
+.dashboard-container h1 {
+  text-align: center;
+}
+
+.user-toolbar {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.lobby_list {
+
+}

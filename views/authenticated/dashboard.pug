@@ -1,14 +1,16 @@
 extends layout
 
 block content
-    h1 Welcome back #{username}!
-    form(action='/logout' method="GET")
-        input(type="submit" name="logout" value="Logout")
-    form(id="createLobby")
-        input(type="submit" name="createLobby" value="Create Lobby")
-    form(id="pageForm" action='/g/0' mehod="GET")
-    div(class="lobby-list")
-        p(id="lobby")
-        //work on javascript part to fetch lobbies
+    div(class="dashboard-wrapper")
+        div(class="dashboard-container")
+            h1 Welcome back #{username}!
+            div(class="user-toolbar")
+                form(action='/logout' method="GET")
+                    input(type="submit" name="logout" value="Logout")
+                form(id="createLobby")
+                    input(type="submit" name="createLobby" value="Create Lobby")
+            div(class="lobby-list")
+                form(id="pageForm" action='/g/0' mehod="GET")
+                p(id="lobby")
 
-    script(src="/scripts/dashboard.js")
+            script(src="/scripts/dashboard.js")

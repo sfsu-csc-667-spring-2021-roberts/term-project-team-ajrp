@@ -1,14 +1,22 @@
 extends layout
 
 block content
-    h1 #{gameName} #{gameID}
-    input(type="hidden" id="idInput" value=gameID)
+    h1 #{gameName}
+    input(type="hidden" id="game_id" value=gameID)
+    input(type="hidden" id="player_id" value=uid)
     h3 Deck:
-    form(action='/game/pullDeck' method="GET")
+    form(id="deck")
         input(type="submit" name="pullDeck" value="Pull Deck")
+    h3 Discarded:
+    div(id="discarded")
     h3 Your Cards:
     div(id="cardOwn")
     h3 Enemy Cards:
+    div(id="enemy1")
+    div(id="enemy2")
+    div(id="enemy3")
+    div(id="enemy4")
+    div(id="enemy5")
     form(action='/game/exitGame' method="GET")
         input(type="submit" name="exit" value="Exit Game")
 

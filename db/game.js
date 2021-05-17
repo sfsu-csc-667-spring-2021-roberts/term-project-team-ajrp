@@ -7,9 +7,7 @@ const createGame = (lobby_id, next) => {
     var cardCount = playerCount - 1 + 52;
     var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+") RETURNING id;";
     db.one(query).then((info) => {
-      console.log(info);
       cards.cardsSetup(info, playerCount, function() {
-        console.log(info.id);
         next(info.id);
       });
     }).catch((error) => {
@@ -33,7 +31,7 @@ const joinGame = (game_id, next) => {
 };
 
 const getFirstCards = (player_id, game_id, next) => {
-  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name <> 'Exploding Kitten' ORDER BY deck_order LIMIT 4) RETURNING *";
+  var query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name <> 'Exploding Kitten' AND name <> 'Defuse' ORDER BY deck_order LIMIT 4) RETURNING *";
   db.any(query).then((info) => {
     query = "UPDATE cards SET owner = "+player_id+" WHERE id IN (SELECT id FROM cards WHERE game_id = "+game_id+" AND name = 'Defuse' AND owner = -1 LIMIT 1) RETURNING *";
     db.one(query).then((defuseInfo) => {
@@ -42,6 +40,24 @@ const getFirstCards = (player_id, game_id, next) => {
     }).catch((error) => {
       console.log(error);
     });
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+const deck = (player_id, game_id, next) => {
+  var query = "UPDATE cards SET owner = "+player_id+" WHERE id = (SELECT id FROM cards WHERE game_id = "+game_id+" AND owner = -1 ORDER BY deck_order LIMIT 1) RETURNING *";
+  db.one(query).then((info) => {
+    next(info);
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+const getEnemyCards = (player_id, game_id, next) => {
+  var query = "SELECT owner FROM cards WHERE game_id = "+game_id+" AND owner <> -1 AND owner <> -2 AND owner <> "+player_id+"";
+  db.one(query).then((info) => {
+    next(info);
   }).catch((error) => {
     console.log(error);
   });
@@ -56,8 +72,8 @@ const playCard = (game_id, card_id, next) => {
   });
 };
 
-const getPlayers = (lobby_id, next) => {
-  var query = "SELECT player_id FROM lobbies_members WHERE lobby_id = "+lobby_id+";";
+const getPlayers = (player_id, game_id, next) => {
+  var query = "SELECT player_id FROM lobbies_members WHERE lobby_id = (SELECT lobby_id FROM games WHERE id = "+game_id+") AND player_id <> "+player_id+";";
   db.many(query).then((results) => {
     next(results);
   }).catch((error) => {
@@ -90,4 +106,4 @@ const exitGame = (player_id, game_id, next) => {
   });
 };
 
-module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard };
+module.exports = { createGame, exitGame, getPlayers, joinGame, getFirstCards, playCard, deck, getEnemyCards };

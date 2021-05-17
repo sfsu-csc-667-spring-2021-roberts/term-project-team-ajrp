@@ -11,6 +11,7 @@ var listEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
 var gameID = document.getElementById('game_id').value;
 var uid = document.getElementById('player_id').value;
 var starter = document.getElementById('starter').value;
+var toPlay = document.getElementById('toPlay');
 var nextPlayer = 0;
 
 async function getResponse(url, next) {
@@ -64,8 +65,8 @@ function addOwnCard(item) {
 		e.preventDefault();
 		var url = "/game/playCard/"+gameID+"/"+item.id;
 		getResponse(url, function(jason) {
-			socket.emit('/cardPlayed', {game: gameID, owner: uid, cardID: item.id, cardName: item.name});
-			socket.emit(item.function, {game: gameID, owner: uid, cardID: item.id, cardName: item.name, cardImage: item.image_url});
+			socket.emit('/cardPlayed', {game: gameID, owner: uid, cardID: item.id, cardName: item.name, next: nextPlayer});
+			socket.emit(item.function, {game: gameID, owner: uid, cardID: item.id, cardName: item.name, cardImage: item.image_url, next: nextPlayer});
 		});
 	});
 }
@@ -135,10 +136,11 @@ function disableCards() {
 	});
 }
 
-function findIfTurn(item) {
+function findIfTurn(item, turnsToPlay) {
 	if (uid == item.next) {
 		turn.innerHTML = "Your Turn";
 		enableCards();
+		toPlay.value = turnsToPlay;
 	} 
 }
 
@@ -149,14 +151,18 @@ deck.addEventListener('submit', function(e) {
 	var url = "/game/deck/"+gameID;
 	getResponse(url, function(jason) {
 		addOwnCard(jason, 0);
-		turn.innerHTML = "Enemy Turn";
-		disableCards();
-		socket.emit("/deck", {game: gameID, owner: uid, next: nextPlayer});
+		if (toPlay.value == 1) {
+			turn.innerHTML = "Enemy Turn";
+			disableCards();
+			socket.emit("/deck", {game: gameID, owner: uid, next: nextPlayer});
+		} else {
+			socket.emit("/deck", {game: gameID, owner: uid, next: uid});
+		}
 	});
 });
 
 socket.on('/deck', function(ownerJason) {
-	findIfTurn(ownerJason);
+	findIfTurn(ownerJason, 1);
 	addEnemyCard(ownerJason, 0);
 });
 

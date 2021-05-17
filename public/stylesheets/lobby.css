@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  padding: 0;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.lobby-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.lobby-container {
+  width: 70%;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 30px;
+}

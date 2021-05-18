@@ -20,7 +20,7 @@ block content
                 form(action='/dashboard/updateLobbyName' method="POST")
                     input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
                     input(type="submit" name="change-name" value="Change Lobby")
-            form(id="exitForm" action=exitLink method="GET")
+            form(id="exitForm")
                 input(type="submit" name="exit" value="Exit")
             form(id="pageForm" action='/g/0' mehod="GET")
         div(class="chat-container")

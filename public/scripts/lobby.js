@@ -5,6 +5,7 @@ var uid = document.getElementById('player_id').value;
 var uname = document.getElementById('username').value;
 var members = document.getElementsByClassName('current-players')[0];
 var exitForm = document.getElementById('exitForm');
+var pageForm = document.getElementById('pageForm');
 
 async function getResponse(url, next) {
   let res = await fetch(url);
@@ -42,15 +43,24 @@ socket.on('/enteredLobby', function(jason) {
 	});
 })
 
-/*
 exitForm.addEventListener('submit', function(e) {
 	e.preventDefault();
-	var url = "/game/createGame/"+gameName+"/"+lobbyID;
-	getResponse(url, function(jason) {
-		jason["starter"] = uid;
-		socket.emit('/enterGame', jason);
-	});
-});*/
+	socket.emit('/exitLobby', {lobby: lobbyID, username: uname});
+	var url = "/dashboard/exitLobby/"+lobbyID;
+	pageForm.action = url;
+	pageForm.setAttribute("method", "GET");
+	pageForm.submit();
+});
+
+socket.on('/exitLobby', function(jason) {
+	setTimeout(function() {
+		var url = "/dashboard/getMembers/"+lobbyID;
+		getResponse(url, async function(jason) {
+			updateMembers(jason);
+		});
+	}, 1000);
+	
+})
 
 gameForm.addEventListener('submit', function(e) {
 	e.preventDefault();
@@ -61,7 +71,6 @@ gameForm.addEventListener('submit', function(e) {
 	});
 });
 
-var pageForm = document.getElementById('pageForm');
 
 socket.on('/enterGame', function(jason) {
 	var url = "/game/g/"+jason.game+"/"+jason.starter;

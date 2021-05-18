@@ -7,6 +7,7 @@ block content
             input(type="hidden" id="nameInfo" value=gameName)
             input(type="hidden" id="lobby_id" value=lobby_id)
             input(type="hidden" id="player_id" value=player_id)
+            input(type="hidden" id="username" value=username)
             h2 Current Players:
             div(class="current-players")
                 div(class="player-container")
@@ -19,7 +20,7 @@ block content
                 form(action='/dashboard/updateLobbyName' method="POST")
                     input(type="text" id="lobbyName" name="lobbyName" placeholder="Lobby name")
                     input(type="submit" name="change-name" value="Change Lobby")
-            form(action='/dashboard/exitLobby' method="GET")
+            form(id="exitForm" action=exitLink method="GET")
                 input(type="submit" name="exit" value="Exit")
             form(id="pageForm" action='/g/0' mehod="GET")
         div(class="chat-container")

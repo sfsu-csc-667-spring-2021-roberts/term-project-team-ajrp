@@ -9,7 +9,7 @@ const createGame = (lobby_id, game_name, next) => {
         var cardCount = playerCount - 1 + 52;
         var query = "INSERT INTO games (lobby_id, number_of_players, number_of_cards, game_name) VALUES ("+lobby_id+", "+playerCount+", "+cardCount+", '"+game_name+"') RETURNING id;";
         db.one(query).then((info) => {
-          cards.cardsSetup(info, 10
+          cards.cardsSetup(info, playerCount
             , function() {
             next(info.id);
           });

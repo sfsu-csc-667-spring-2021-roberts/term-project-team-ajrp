@@ -61,6 +61,15 @@ const countPlayers = (lobby_id, next) => {
   });
 }
 
+const getMembers = (lobby_id, next) => {
+  var query = "SELECT username FROM users WHERE id IN (SELECT player_id FROM lobbies_members WHERE lobby_id = "+lobby_id+");";
+  db.many(query).then((info) => {
+    next(info);
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
 const removeLobby = (lobby_id, next) => {
   db.none("DELETE FROM lobbies WHERE id = "+lobby_id+"").then(() => {
     next();
@@ -93,4 +102,22 @@ const sealLobby = (lobby_id, next) => {
   });
 };
 
-module.exports = { createLobby, allLobbies, countPlayers, joinLobby, removeLobby, sealLobby };
+
+const exitLobby = (player_id, lobby_id, next) => {
+  db.none("DELETE FROM lobbies_members WHERE player_id = "+player_id+"")
+  .then(() => {
+    countPlayers(lobby_id, function(number_of_players) {
+      if (number_of_players == 0) {
+        removeLobby(lobby_id, function() {
+          next();
+        });
+      } else {
+        next();
+      }
+    });
+  }).catch((error) => {
+    console.log(error);
+  });
+};
+
+module.exports = { createLobby, allLobbies, countPlayers, joinLobby, removeLobby, sealLobby, exitLobby, getMembers };

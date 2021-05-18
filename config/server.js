@@ -18,6 +18,9 @@ io.on('connection', (socket) => {
   socket.on('/enterGame', (info) => {
   	io.to(info.lobby.toString()).emit('/enterGame', info);
   });
+  socket.on('/enteredLobby', (info) => {
+  	io.to(info.lobby.toString()).emit('/enteredLobby', info);
+  });
   socket.on('/left', (info) => {
   	io.to(info.game.toString()).emit('/left', info);
   });
